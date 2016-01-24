@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Milktea Tracker</string>
+    <string name="activity_name">Milktea Search</string>
+
+    <!--
+         By convention, "action" denotes that this String will be used as the label for an Action,
+         typically from the action bar.  The ActionBar is limited real estate, so shorter is better.
+    -->
+    <string name="action_search">Search</string>
+    <string name="action_favorites">History</string>
+</resources>
