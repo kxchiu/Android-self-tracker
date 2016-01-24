@@ -11,12 +11,16 @@ import android.util.Log;
 
 import java.sql.SQLDataException;
 
+import static edu.uw.cwc8.selftracker.MilkteaDatabase.Helper.getHelper;
+
 /**
  * Class to manage a database to store info about milktea drinking activity
  * Ideally this should be made into a Provider
  */
 
 public final class MilkteaDatabase {
+
+    private static final String TAG = "MilkteaDatabase";
 
     //empty constructor so cannot be called (so no new database will be created)
     public MilkteaDatabase(){}
@@ -52,6 +56,8 @@ public final class MilkteaDatabase {
         public static final String DATABASE_NAME = "milktea.db";
         public static final int DATABASE_VERSION = 1;
 
+        public static SQLiteDatabase m_db;
+
         public Helper(Context context){
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
@@ -67,6 +73,7 @@ public final class MilkteaDatabase {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+            Log.v(TAG, "creating a milktea table");
             db.execSQL(CREATE_MILKTEA_TABLE);
         }
 
@@ -79,8 +86,8 @@ public final class MilkteaDatabase {
 
     public static void testDatabase(Context context) {
 
-        Log.v("Test", context.toString());
-        Helper helper = Helper.getHelper(context);
+        Log.v("Test Database", "testing database");
+        Helper helper =  new Helper(context);
 
         //get the writable database so we can write into it
         //sidenote: readable database allows you to view but cannot be written into
@@ -90,7 +97,7 @@ public final class MilkteaDatabase {
         ContentValues content = new ContentValues();
         content.put(MilkteaEntry.COL_TITLE, "test");
         content.put(MilkteaEntry.COL_CUP, 1);
-        content.put(MilkteaEntry.COL_TIME, "JAN 23 14:00pm");
+        content.put(MilkteaEntry.COL_TIME, "JAN 24 14:00pm");
         content.put(MilkteaEntry.COL_DESC, "Drank a cup of milktea");
 
         //insert table name, null [for nullColumnHack], and the content values
@@ -104,6 +111,7 @@ public final class MilkteaDatabase {
     }
 
     public static Cursor queryDatabase(Context context){
+        Log.v("QueryDatabase", "Query from database");
         Helper helper = new Helper(context);
 
         SQLiteDatabase db = helper.getWritableDatabase();

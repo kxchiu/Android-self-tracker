@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -114,35 +115,6 @@ public class MilkteaActivity extends AppCompatActivity implements MilkteaFragmen
     private void runTest() {
         Log.v(TAG, "Test button clicked!");
 
-        //AlertDialog example---------
-        //initiate an Alert Dialog Builder with its constructor
-        //AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //builder.setTitle("Alert!")
-        //        .setMessage("Danger Will Robinson!");
-
-        //builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-        //    public void onClick(DialogInterface dialog, int which) {
-        //        //user clicked OK button
-        //        Log.v(TAG, "Yes!");
-        //        dialog.dismiss();
-        //    }
-        //});
-
-        //create me a dialog
-        //AlertDialog dialog = builder.create();
-
-        //show the dialog on the screen
-        //dialog.show();
-
-        //Toast example---------
-        /*
-        Context context = getApplicationContext();
-        String text = "Hello world";
-        String text = "Hello world";
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-        */
         Toast.makeText(this, "Making some yummy toast", Toast.LENGTH_SHORT).show();
 
         MilkteaDatabase.testDatabase(this);
