@@ -31,8 +31,9 @@ public final class MilkteaDatabase {
         public static final String TABLE_NAME = "milktea";
         public static final String COL_TITLE = "title";
         public static final String COL_CUP = "cup";
-        public static final String COL_TIME = "time";
-        public static final String COL_DESC = "description";
+        public static final String COL_TIME = "time"; //actual stored info is changed to Store Name instead
+        public static final String COL_RATING = "rating";
+        public static final String COL_TIMESTAMP = "timestamp";
     }
 
     //constant String for creating the milktea table
@@ -41,8 +42,9 @@ public final class MilkteaDatabase {
                     MilkteaEntry._ID + " INTEGER PRIMARY KEY" + "," +
                     MilkteaEntry.COL_TITLE + " TEXT" + "," +
                     MilkteaEntry.COL_CUP + " INTEGER" + "," +
-                    MilkteaEntry.COL_TIME + " TEXT UNIQUE" + "," +
-                    MilkteaEntry.COL_DESC + " TEXT" +
+                    MilkteaEntry.COL_TIME + " TEXT" + "," +
+                    MilkteaEntry.COL_RATING + " INTEGER" + "," +
+                    MilkteaEntry.COL_TIMESTAMP + " TEXT" +
                     ")";
 
     //constant String for dropping the milktea table
@@ -55,8 +57,6 @@ public final class MilkteaDatabase {
 
         public static final String DATABASE_NAME = "milktea.db";
         public static final int DATABASE_VERSION = 1;
-
-        public static SQLiteDatabase m_db;
 
         public Helper(Context context){
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -84,30 +84,24 @@ public final class MilkteaDatabase {
         }
     }
 
-    public static void testDatabase(Context context) {
-
-        Log.v("Test Database", "testing database");
+    public static void addToDatabase(Context context, int cup, String time, int rating, String tStamp){
+        Log.v("AddToDatabase", "Adding...");
         Helper helper =  new Helper(context);
 
-        //get the writable database so we can write into it
-        //sidenote: readable database allows you to view but cannot be written into
         SQLiteDatabase db = helper.getWritableDatabase();
 
-        //create the contetnt values to be inserted
         ContentValues content = new ContentValues();
-        content.put(MilkteaEntry.COL_TITLE, "test");
-        content.put(MilkteaEntry.COL_CUP, 1);
-        content.put(MilkteaEntry.COL_TIME, "JAN 24 14:00pm");
-        content.put(MilkteaEntry.COL_DESC, "Drank a cup of milktea");
-
-        //insert table name, null [for nullColumnHack], and the content values
+        content.put(MilkteaEntry.COL_TITLE, "Milktea");
+        content.put(MilkteaEntry.COL_CUP, cup);
+        content.put(MilkteaEntry.COL_TIME, time);
+        content.put(MilkteaEntry.COL_RATING, rating);
+        content.put(MilkteaEntry.COL_TIMESTAMP, tStamp);
         try {
             long newRowId = db.insert(MilkteaEntry.TABLE_NAME, null, content);
-            Log.v("DATABase", "" + newRowId);
+            Log.v("Database", "" + newRowId);
         }catch (SQLiteConstraintException e){
-            Log.v("DATABase", "Unexpected SQLite error: "+e);
+            Log.v("Database", "Unexpected SQLite error: "+e);
         }
-
     }
 
     public static Cursor queryDatabase(Context context){
@@ -115,6 +109,8 @@ public final class MilkteaDatabase {
         Helper helper = new Helper(context);
 
         SQLiteDatabase db = helper.getWritableDatabase();
+
+        String descOrder = MilkteaEntry._ID+" DESC";
 
         //select query takes in 8 params: table to select from, column(s) to select, etc.
         //put null for place you want to leave blank
@@ -124,10 +120,11 @@ public final class MilkteaDatabase {
                 MilkteaEntry._ID,
                 MilkteaEntry.COL_TITLE,
                 MilkteaEntry.COL_CUP,
-                MilkteaEntry.COL_TIME
+                MilkteaEntry.COL_TIME,
+                MilkteaEntry.COL_RATING,
+                MilkteaEntry.COL_TIMESTAMP
         };
-
-        Cursor results = db.query(MilkteaEntry.TABLE_NAME, cols, null, null, null, null, null, null);
+        Cursor results = db.query(MilkteaEntry.TABLE_NAME, cols, null, null, null, null, descOrder, null);
 
         return results;
     }

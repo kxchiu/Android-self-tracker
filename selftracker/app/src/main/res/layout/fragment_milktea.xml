@@ -3,36 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     tools:context="edu.uw.selftracker.MilkteaFragment">
 
-    <LinearLayout
-        android:id="@+id/inputLayout"
+    <Button
+        android:id="@+id/btnAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <Button
-            android:id="@+id/btnSearch"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View History"
-            />
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Milktea"
-            />
-
-    </LinearLayout>
+        android:text="Add Milktea"
+        />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/inputLayout"
+        android:layout_below="@id/btnAdd"
         >
     </ListView>
 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context="edu.uw.selftracker.SummaryFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="How many cups did you drink?"
+        />
+
+    <EditText
+        android:id="@+id/drinkCup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numeric="integer"
+        android:hint="# of cups you drank"
+        android:textSize="12dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Which store did you buy the milktea from?"
+        />
+
+    <EditText
+        android:id="@+id/drinkTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter the milktea store name"
+        android:textSize="12dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="How would you rate your milktea? (1=Bad, 5=Great)"
+        />
+
+    <EditText
+        android:id="@+id/drinkRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numeric="integer"
+        android:hint="1=Bad, 5=Great"
+        android:textSize="12dp"
+        />
+
+</LinearLayout>

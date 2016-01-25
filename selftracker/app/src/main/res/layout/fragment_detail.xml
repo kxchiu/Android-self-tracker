@@ -1,31 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:layout_marginLeft="5dp"
+    >
 
     <TextView
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:text="Details"
         android:maxLines="5"
-        android:textSize="32dp"
+        android:textSize="24dp"
         android:paddingBottom="10dp"
-        android:layout_marginBottom="89dp"
-        android:layout_above="@+id/txtTime"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:id="@+id/txtTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Time"
-        android:textSize="18dp"
-        android:autoLink="web"
-        android:clickable="true"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginBottom="10dp" />
 
     <TextView
         android:id="@+id/txtCup"
@@ -33,40 +23,22 @@
         android:layout_height="wrap_content"
         android:text="Cup"
         android:textSize="18dp"
-        android:autoLink="web"
-        android:clickable="true"
-        android:layout_above="@+id/txtTime"
-        android:layout_alignLeft="@+id/txtTitle"
-        android:layout_alignStart="@+id/txtTitle"
-        android:layout_marginBottom="41dp" />
-<!--
-    <TextView
-        android:id="@+id/txtMilkteaTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Placeholder (2016)"
-        android:maxLines="5"
-        android:textSize="32dp"
-        android:paddingBottom="10dp"
-        />
+        android:layout_marginBottom="10dp" />
 
     <TextView
-        android:id="@+id/txtMilkteaTime"
+        android:id="@+id/txtTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="http://www.imdb.com/"
+        android:text="Time"
         android:textSize="18dp"
-        android:autoLink="web"
-        android:clickable="true"
-        android:layout_below="@id/txtMilkteaTitle"
-        />
+        android:layout_marginBottom="10dp" />
 
-    <Button
-        android:id="@+id/btnFavorite"
+    <TextView
+        android:id="@+id/txtGivenRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add to Favorites"
-        android:layout_below="@id/txtMilkteaTime"
-        />
--->
-</RelativeLayout>
+        android:text="Rating"
+        android:textSize="18dp"
+        android:layout_marginBottom="10dp" />
+
+</LinearLayout>

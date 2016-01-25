@@ -1,13 +1,9 @@
 package edu.uw.cwc8.selftracker;
 
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,59 +11,44 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 
 public class MilkteaActivity extends AppCompatActivity implements MilkteaFragment.OnMilkteaSelectionListener {
 
     private static final String TAG = "MilkteaActivity";
     private boolean rightVisible;
+    public FrameLayout frameLeft;
+    public FrameLayout frameRight;
+    public static final String MASTER_FRAG = "MasterFrag";
+    public static final String SUMMARY_FRAG = "SummaryFrag";
+    public static final String DETAIL_FRAG = "DetailFrag";
+    private int config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int config = getResources().getConfiguration().orientation;
+        config = getResources().getConfiguration().orientation;
 
-        if(config == Configuration.ORIENTATION_LANDSCAPE){
-            FrameLayout fRight = (FrameLayout)findViewById(R.id.container_right);
-            rightVisible = fRight.getVisibility() == View.VISIBLE;
-            Log.v(TAG, "" + fRight.getVisibility());
-        } else {
-            Log.v(TAG, "Kaboom");
-        }
+        frameLeft = (FrameLayout)findViewById(R.id.containerLeft);
+        frameRight = (FrameLayout)findViewById(R.id.containerRight);
 
         FragmentManager manager = getFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
-        if(rightVisible){
-            //ft.add(R.id.container_right, new MilkteaFragment());
+
+        if(config == Configuration.ORIENTATION_LANDSCAPE){
+            FrameLayout fRight = (FrameLayout)findViewById(R.id.containerRight);
+            rightVisible = fRight.getVisibility() == View.VISIBLE;
+            Log.v(TAG, "LandScape Mode Visibility: " + fRight.getVisibility());
+
+            showMilkteaFragment();
+            showDetailFragment();
+
         } else {
-            //ft.add(R.id.container, new MilkteaFragment());
+            Log.v(TAG, "Kaboom!! You are not in landscape mode!");
         }
-        ft.commit();
-
-        showSearchFragment();
     }
-
 
     //overide the onCreate menu method and inflate the menu
     @Override
@@ -84,69 +65,63 @@ public class MilkteaActivity extends AppCompatActivity implements MilkteaFragmen
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_search:
-                showSearchFragment();
+                showMilkteaFragment();
                 return true;
-            case R.id.action_favorites:
-                showFavoritesFragment();
-                return true;
-            case R.id.action_test:
-                runTest();
+            case R.id.action_summary:
+                showSummaryFragment();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    //load in the fragment
-    private void showSearchFragment() {
+    //load in the milktea fragment
+    private void showMilkteaFragment() {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new MilkteaFragment())
+                .replace(R.id.containerLeft, new MilkteaFragment())
                 .commit();
     }
 
-    private void showFavoritesFragment() {
+    //load in the detail fragment
+    private void showDetailFragment() {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new MilkteaFragment())
+                .replace(R.id.containerRight, new DetailFragment())
                 .addToBackStack(null)
                 .commit();
     }
 
-    //a method to test something!
-    private void runTest() {
-        Log.v(TAG, "Test button clicked!");
-
-        Toast.makeText(this, "Making some yummy toast", Toast.LENGTH_SHORT).show();
-
-        MilkteaDatabase.testDatabase(this);
+    //load in the summary fragment
+    private void showSummaryFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.containerRight, new SummaryFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
-    @Override
-    public void onMilkteaSelected(Milktea milktea) {
+    public void onShowDialog(AddFragment fragment) {
+        Log.v(TAG, "Callback active");
+        FragmentManager manager = getFragmentManager();
+        fragment.show(manager, "dialog");
+    }
+
+    //shows detail of the selected item
+    public void onMilkteaSelected(Cursor milktea) {
         DetailFragment detail = new DetailFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putString("title", milktea.title);
-        bundle.putInt("cup", milktea.cup);
-        bundle.putString("time", milktea.time);
-        bundle.putString("description", milktea.desc);
+        bundle.putString("title", milktea.getString(1));
+        bundle.putInt("cup", milktea.getInt(2));
+        bundle.putString("time", milktea.getString(3));
+        bundle.putInt("rating", milktea.getInt(4));
+        bundle.putString("timestamp", milktea.getString(5));
 
         detail.setArguments(bundle);
 
         //swap the fragments
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, detail)
+                .replace(R.id.containerLeft, new MilkteaFragment())
+                .replace(R.id.containerRight, detail)
                 .addToBackStack(null)
                 .commit();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
-    //for non-support Activity
-    //    public void onBackPressed() {
-    //        if(getFragmentManager().getBackStackEntryCount() != 0) {
-    //            getFragmentManager().popBackStack();
-    //        } else {
-    //            super.onBackPressed();
-    //        }
-    //        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-    //    }
 }
